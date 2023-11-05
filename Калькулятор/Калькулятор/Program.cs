@@ -44,6 +44,7 @@ namespace калькулятор
             Console.WriteLine(resultOp);
             Console.WriteLine(resultNum);
             Console.WriteLine(Calculate(listNum, listOp));
+            Console.ReadLine();
         }
         static double Calculate(List<string> listNum, List<string> listOp)
         {
@@ -53,35 +54,40 @@ namespace калькулятор
                 if (listOp[i] == "*")
                 {
                     string interimCalc = (Convert.ToDouble(listNum[i]) * Convert.ToDouble(listNum[i + 1])).ToString();
-                    listNum.Insert(i, interimCalc);
-                    listNum.RemoveAt(i + 1);
-                    listNum.RemoveAt(i + 1);
-                    //listOp.RemoveAt(i);
+                    i = DeleteNumOp(listNum, listOp, i, interimCalc);
                 }
                 else if (listOp[i] == "/")
                 {
                     string interimCalc = (Convert.ToDouble(listNum[i]) / Convert.ToDouble(listNum[i + 1])).ToString();
-                    listNum.Insert(i, interimCalc);
-                    listNum.RemoveAt(i + 1);
-                    listNum.RemoveAt(i + 1);
-                    //listOp.RemoveAt(i);
+                    i = DeleteNumOp(listNum, listOp, i, interimCalc);
                 }
             }
-            listOp.Remove("*");
-            listOp.Remove("/");
-            for (int i = 0; i < listOp.Count; i++)
+            if (listOp.Count == 0) return Convert.ToDouble(listNum[0]);
+            else
             {
-                if (listOp[i] == "+")
+                for (int i = 0; i < listOp.Count; i++)
                 {
-                    result += Convert.ToDouble(listNum[i + 1]);
+                    if (listOp[i] == "+")
+                    {
+                        result += Convert.ToDouble(listNum[i + 1]);
+                    }
+                    else if (listOp[i] == "-")
+                    {
+                        result -= Convert.ToDouble(listNum[i + 1]);
+                    }
                 }
-                else if (listOp[i] == "-")
-                {
-                    result -= Convert.ToDouble(listNum[i + 1]);
-                }
-
+                return result;
             }
-            return result;
+        }
+
+        private static int DeleteNumOp(List<string> listNum, List<string> listOp, int i, string interimCalc)
+        {
+            listNum.Insert(i, interimCalc);
+            listNum.RemoveAt(i + 1);
+            listNum.RemoveAt(i + 1);
+            listOp.RemoveAt(i);
+            i--;
+            return i;
         }
     }
 }
