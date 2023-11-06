@@ -33,14 +33,16 @@ namespace калькулятор
                 {
                     a += userStr[i].ToString();
                     listNum.Add(a);
-                    tokens.Add(float.Parse(a));
+                    tokens.Add(a);
                 }
                 else
                 {
                     listNum.Add(a);
-                    tokens.Add(float.Parse(a));
+                    tokens.Add(a);
                     tokens.Add(userStr[i].ToString());
                     a = "";
+                    listNum.Remove("");
+                    tokens.Remove("");
                 }
             }
             var resultOp = String.Join(", ", listOp.ToArray());
