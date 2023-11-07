@@ -27,13 +27,29 @@ namespace калькулятор
                 }
                 if (Char.IsDigit(userStr[i]) && (i != (userStr.Length - 1)))
                 {
-                    a += userStr[i].ToString();
+                    if (userStr[i] != ')')
+                    {
+                        a += userStr[i].ToString();
+                    }
+                    else
+                    {
+                        tokens.Add(a);
+                        tokens.Add(")");
+                    }
                 }
                 else if (i == (userStr.Length - 1))
                 {
-                    a += userStr[i].ToString();
-                    listNum.Add(a);
-                    tokens.Add(a);
+                    if (userStr[i] != ')')
+                    {
+                        a += userStr[i].ToString();
+                        listNum.Add(a);
+                        tokens.Add(a);
+                    }
+                    else
+                    {
+                        tokens.Add(a);
+                        tokens.Add(")");
+                    }
                 }
                 else
                 {
