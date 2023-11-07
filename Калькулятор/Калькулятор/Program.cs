@@ -96,7 +96,10 @@ namespace калькулятор
                     }
                     else if (OperationPriority[tokens[i].ToString()] <= OperationPriority[stackForOp.Peek().ToString()])
                     {
-                        RPN.Add(stackForOp.Pop());
+                        while (stackForOp.Count > 1)
+                        {
+                            RPN.Add(stackForOp.Pop());
+                        }
                         stackForOp.Push(tokens[i]);
                     }
                 }
