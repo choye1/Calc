@@ -102,7 +102,11 @@ namespace калькулятор
                     {
                         stackForOp.Push(tokens[i]);
                     }
-                    else if(OperationPriority[tokens[i].ToString()] == 1)
+                    else if (OperationPriority[tokens[i].ToString()] == 0)
+                    {
+                        stackForOp.Push(tokens[i]);
+                    }
+                    else if (OperationPriority[tokens[i].ToString()] == 1)
                     {
                         while (OperationPriority[stackForOp.Peek().ToString()] > 0)
                         {
@@ -110,11 +114,19 @@ namespace калькулятор
                         }
                         stackForOp.Pop();
                     }
-                    else if (OperationPriority[tokens[i].ToString()] <= OperationPriority[stackForOp.Peek().ToString()])
+                    else if (OperationPriority[tokens[i].ToString()] <= OperationPriority[stackForOp.Peek().ToString()] && OperationPriority[tokens[i].ToString()] != 0)
                     {
-                        while (stackForOp.Count > 1)
+                        while (stackForOp.Count > 0)
                         {
-                            RPN.Add(stackForOp.Pop());
+                            if (OperationPriority[tokens[i].ToString()] == OperationPriority[stackForOp.Peek().ToString()])
+                            {
+                                RPN.Add(stackForOp.Pop());
+                                break;
+                            }
+                            else
+                            {
+                                RPN.Add(stackForOp.Pop());
+                            }
                         }
                         stackForOp.Push(tokens[i]);
                     }
