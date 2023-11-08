@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -67,10 +68,10 @@ namespace калькулятор
             Console.WriteLine(resultOp);
             Console.WriteLine(resultNum);
             Console.WriteLine(resultTokens);
-            RPNImport(tokens);
-            
+            RPNCalculator(RPNImport(tokens));
+
             //Console.WriteLine(Calculate(listNum, listOp));
-            Console.ReadLine();
+            Console.WriteLine();
         }
         static List<object> RPNImport(List<object> tokens)
         {
@@ -143,6 +144,50 @@ namespace калькулятор
             Console.WriteLine(resultRpn);
             return RPN;
             
+        }
+        public static double RPNCalculator(List<object> RPN)
+        {
+            Stack<object> stackForResult = new Stack<object>();
+
+            foreach (var item in RPN)
+            {
+                string elem = Convert.ToString(item);
+                if (double.TryParse(elem, out var value))
+                {
+                    stackForResult.Push(value);
+                }
+                else
+                {
+                    if (elem == "^")
+                    {
+                        double intermediateResult = Math.Pow(Convert.ToDouble(stackForResult.Pop()), Convert.ToDouble(stackForResult.Pop()));
+                        stackForResult.Push(intermediateResult);
+                    }
+                    else if (elem == "*")
+                    {
+                        double intermediateResult = Convert.ToDouble(stackForResult.Pop()) * Convert.ToDouble(stackForResult.Pop());
+                        stackForResult.Push(intermediateResult);
+                    }
+                    else if (elem == "/")
+                    {
+                        double intermediateResult = 1f/(Convert.ToDouble(stackForResult.Pop()) / Convert.ToDouble(stackForResult.Pop()));
+                        stackForResult.Push(intermediateResult);
+                    }
+                    else if (elem == "+")
+                    {
+                        double intermediateResult = Convert.ToDouble(stackForResult.Pop()) + Convert.ToDouble(stackForResult.Pop());
+                        stackForResult.Push(intermediateResult);
+                    }
+                    else if (elem == "-")
+                    {
+                        double intermediateResult = -(Convert.ToDouble(stackForResult.Pop()) - Convert.ToDouble(stackForResult.Pop()));
+                        stackForResult.Push(intermediateResult);
+                    }
+                }
+            } 
+            double result = Convert.ToDouble(stackForResult.Pop());
+            Console.WriteLine(result);
+            return result;
         }
 
         //static double Calculate(List<string> listNum, List<string> listOp)
