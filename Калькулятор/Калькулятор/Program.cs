@@ -93,28 +93,34 @@ namespace калькулятор
                 {
                     RPN.Add(tokens[i]);
                 }
+                
                 else if (float.TryParse(tokens[i].ToString(),out float n1) == false)
                 {
                     if (stackForOp.Count == 0)
                     {
                         stackForOp.Push(tokens[i]);
                     }
+                    
                     else if (OperationPriority[tokens[i].ToString()] > OperationPriority[stackForOp.Peek().ToString()])
                     {
                         stackForOp.Push(tokens[i]);
                     }
+                    
                     else if (OperationPriority[tokens[i].ToString()] == 0)
                     {
                         stackForOp.Push(tokens[i]);
                     }
+                    
                     else if (OperationPriority[tokens[i].ToString()] == 1)
                     {
                         while (OperationPriority[stackForOp.Peek().ToString()] > 0)
                         {
                             RPN.Add(stackForOp.Pop());
                         }
+                        
                         stackForOp.Pop();
                     }
+                    
                     else if (OperationPriority[tokens[i].ToString()] <= OperationPriority[stackForOp.Peek().ToString()] && OperationPriority[tokens[i].ToString()] != 0)
                     {
                         while (stackForOp.Count > 0)
@@ -124,22 +130,30 @@ namespace калькулятор
                                 RPN.Add(stackForOp.Pop());
                                 break;
                             }
+                            
                             else
                             {
                                 RPN.Add(stackForOp.Pop());
                             }
+                            
                         }
+                        
                         stackForOp.Push(tokens[i]);
                     }
+                    
                 }
+                
             }
+            
             if (stackForOp.Count > 0)
             {
                 while (stackForOp.Count != 0)
                 {
                     RPN.Add(stackForOp.Pop());
                 }
+                
             }
+            
             var resultRpn = String.Join(", ", RPN.ToArray());
             Console.WriteLine(resultRpn);
             return RPN;
@@ -158,33 +172,34 @@ namespace калькулятор
                 }
                 else
                 {
-                    if (elem == "^")
+                    switch(elem)
                     {
-                        double intermediateResult = Math.Pow(Convert.ToDouble(stackForResult.Pop()), Convert.ToDouble(stackForResult.Pop()));
-                        stackForResult.Push(intermediateResult);
+                        case "^":
+                            double intermediateResult = Math.Pow(Convert.ToDouble(stackForResult.Pop()), Convert.ToDouble(stackForResult.Pop()));
+                            stackForResult.Push(intermediateResult);
+                            return "";
+                        case "*":
+                            double intermediateResult = Math.Pow(Convert.ToDouble(stackForResult.Pop()), Convert.ToDouble(stackForResult.Pop()));
+                            stackForResult.Push(intermediateResult);
+                            return "";
+                        case "/":
+                            double intermediateResult = 1f/(Convert.ToDouble(stackForResult.Pop()) / Convert.ToDouble(stackForResult.Pop()));
+                            stackForResult.Push(intermediateResult);
+                            return "";
+                        case "+":
+                            double intermediateResult = Convert.ToDouble(stackForResult.Pop()) + Convert.ToDouble(stackForResult.Pop());
+                            stackForResult.Push(intermediateResult);
+                            return "";
+                        case "-":
+                            double intermediateResult = -(Convert.ToDouble(stackForResult.Pop()) - Convert.ToDouble(stackForResult.Pop()));
+                            stackForResult.Push(intermediateResult);
+                            return "";
                     }
-                    else if (elem == "*")
-                    {
-                        double intermediateResult = Convert.ToDouble(stackForResult.Pop()) * Convert.ToDouble(stackForResult.Pop());
-                        stackForResult.Push(intermediateResult);
-                    }
-                    else if (elem == "/")
-                    {
-                        double intermediateResult = 1f/(Convert.ToDouble(stackForResult.Pop()) / Convert.ToDouble(stackForResult.Pop()));
-                        stackForResult.Push(intermediateResult);
-                    }
-                    else if (elem == "+")
-                    {
-                        double intermediateResult = Convert.ToDouble(stackForResult.Pop()) + Convert.ToDouble(stackForResult.Pop());
-                        stackForResult.Push(intermediateResult);
-                    }
-                    else if (elem == "-")
-                    {
-                        double intermediateResult = -(Convert.ToDouble(stackForResult.Pop()) - Convert.ToDouble(stackForResult.Pop()));
-                        stackForResult.Push(intermediateResult);
-                    }
+                    
                 }
+                
             } 
+            
             double result = Convert.ToDouble(stackForResult.Pop());
             Console.WriteLine(result);
             return result;
